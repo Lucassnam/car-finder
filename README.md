@@ -1,36 +1,71 @@
-# 🏎️ Car Finder
+# Car Finder
 
-A personal dashboard that scrapes used-car listings, enriches them with a **local AI model**, and surfaces genuinely good deals on sports / project / classic cars around the Bay Area — without the SUV/Prius/dealer/ad noise.
+[![CI](https://github.com/Lucassnam/car-finder/actions/workflows/ci.yml/badge.svg)](https://github.com/Lucassnam/car-finder/actions/workflows/ci.yml)
 
-- **Sources:** Craigslist (Bay Area + driveable NorCal), Bring a Trailer, Cars & Bids, eBay Motors
-- **AI:** runs fully local on your GPU via [Ollama](https://ollama.com) — no API cost, nothing leaves your machine
-- **Deal score (1–10):** grounded in *real sold prices* mined from BaT/Cars&Bids/eBay, normalized to local fair value
-- **Per listing:** parsed specs · private-vs-dealer detection · red flags (salvage/rebuilt/high-mileage) · model-specific known quirks · tailored questions to ask the seller
-- **Dashboard:** split map (local cars) + filterable scored list (all sources)
+A personal dashboard that scrapes used car listings, enriches them with a local
+AI model, and surfaces genuinely good deals on sports, project and classic cars
+around the Bay Area, without the SUV, Prius, dealer and ad noise.
 
-## Setup
+![The Car Finder dashboard](docs/screenshot.png)
 
-👉 **See [SETUP.md](SETUP.md)** — one command installs every tool, library, and AI model on macOS or Windows.
+<sub>Screenshot shows the dashboard shell with the backend stopped, so the map
+and result list are empty. Start the API to populate them.</sub>
 
-```bash
-# macOS (dev)
-bash scripts/setup.sh
-```
-```powershell
-# Windows (your 5080 PC)
-.\scripts\setup.ps1
-```
+## What makes it different
 
-## Build status
+Most listing aggregators rank by price. This one ranks by **deal**, and it does
+the reasoning locally.
+
+- **Sources:** Craigslist across the Bay Area and driveable NorCal, Bring a
+  Trailer, Cars and Bids, eBay Motors
+- **AI runs on your own GPU** through [Ollama](https://ollama.com). No API cost,
+  no listing data leaving your machine
+- **Deal score, 1 to 10**, grounded in real sold prices mined from Bring a
+  Trailer, Cars and Bids and eBay, then normalised to local fair value
+- **Per listing:** parsed specs, private seller versus dealer detection, red
+  flags for salvage, rebuilt and high mileage, model specific known quirks, and
+  a tailored list of questions to ask the seller
+- **Dashboard:** split view with a map of local cars beside a filterable scored
+  list of everything
+
+## Status
+
+Honest about where it is. Phase 0 is committed and builds; the rest is planned.
 
 | Phase | Scope | Status |
-|------|-------|--------|
-| **0** | Project scaffold, dependencies, installer, models, DB | ✅ this commit |
-| **1** | Craigslist → AI extraction → scored list UI | ⏳ next |
-| **2** | BaT/C&B sold-comps backfill → real deal-rating engine | ⏳ |
-| **3** | Map + auctions + eBay API + saved searches + alerts | ⏳ |
-| **4** | Vision (odometer/title), sold-comps explorer, polish | ⏳ |
+| --- | --- | --- |
+| 0 | Project scaffold, dependencies, installer, models, database | Done |
+| 1 | Craigslist, AI extraction, scored list UI | Next |
+| 2 | Sold comps backfill from BaT and Cars and Bids, deal rating engine | Planned |
+| 3 | Map, auctions, eBay API, saved searches, alerts | Planned |
+| 4 | Vision for odometer and title, sold comps explorer, polish | Planned |
 
 ## Stack
 
-Python · FastAPI · Playwright/httpx · APScheduler · PostgreSQL+PostGIS · Ollama (Qwen2.5 + Llama-Vision) · Next.js · Tailwind · MapLibre
+Python, FastAPI, Playwright and httpx for scraping, APScheduler, PostgreSQL with
+PostGIS, Ollama running Qwen2.5 and Llama Vision, Next.js, Tailwind CSS and
+MapLibre on the front end.
+
+## Setup
+
+See **[SETUP.md](SETUP.md)**. One command installs every tool, library and model
+on macOS or Windows.
+
+```bash
+# macOS
+bash scripts/setup.sh
+```
+
+```powershell
+# Windows
+.\scripts\setup.ps1
+```
+
+## Checks
+
+```bash
+python -m compileall backend/app   # backend syntax
+cd frontend && npm ci && npm run build
+```
+
+Both run on every push through GitHub Actions.
