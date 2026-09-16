@@ -17,7 +17,7 @@ const DEFAULT_ZOOM = 8.5;
 export function Map({ points, selectedId, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
-  const markersRef = useRef<Map<string, Marker>>(new Map());
+  const markersRef = useRef<globalThis.Map<string, Marker>>(new globalThis.Map());
   const popupRef = useRef<Popup | null>(null);
 
   // Init map once
